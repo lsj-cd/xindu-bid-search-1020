@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新都区招投标信息 - 招投标智慧检索</title>
+<style>
+* {{ margin: 0; padding: 0; box-sizing: border-box; }}
+body {{ font-family: 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(135deg, #0c0c1d 0%, #1a1a3e 50%, #0d0d2b 100%);
+  color: #e0e0e0; min-height: 100vh; }}
+.header {{ background: linear-gradient(90deg, #1e3a5f, #2d1b69);
+  padding: 24px 40px; display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 2px solid #4a90d9; box-shadow: 0 4px 20px rgba(74,144,217,0.3); }}
+.header h1 {{ font-size: 26px; color: #fff; letter-spacing: 2px; }}
+.header h1 span {{ color: #4fc3f7; }}
+.header .date {{ color: #90caf9; font-size: 14px; }}
+.stats {{ display: flex; gap: 20px; padding: 16px 40px;
+  background: rgba(255,255,255,0.05); }}
+.stat-card {{ background: linear-gradient(135deg, #1a237e, #283593);
+  border-radius: 12px; padding: 16px 24px; min-width: 140px; text-align: center;
+  border: 1px solid rgba(74,144,217,0.3); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }}
+.stat-card .num {{ font-size: 28px; font-weight: bold; color: #4fc3f7; }}
+.stat-card .label {{ font-size: 12px; color: #90a4ae; margin-top: 4px; }}
+.controls {{ padding: 16px 40px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }}
+.search-box {{ flex: 1; min-width: 200px; padding: 10px 16px; border-radius: 8px;
+  border: 1px solid #4a90d9; background: rgba(255,255,255,0.08);
+  color: #fff; font-size: 14px; outline: none; }}
+.search-box:focus {{ border-color: #4fc3f7; box-shadow: 0 0 8px rgba(79,195,247,0.4); }}
+.filter-btn {{ padding: 8px 16px; border-radius: 6px; border: 1px solid #4a90d9;
+  background: transparent; color: #90caf9; cursor: pointer; font-size: 13px;
+  transition: all 0.2s; }}
+.filter-btn:hover, .filter-btn.active {{ background: #4a90d9; color: #fff; }}
+.table-wrap {{ padding: 0 40px 40px; overflow-x: auto; }}
+table {{ width: 100%; border-collapse: collapse; font-size: 13px; }}
+thead th {{ background: linear-gradient(180deg, #1a237e, #283593);
+  color: #4fc3f7; padding: 12px 10px; text-align: left; position: sticky; top: 0;
+  border-bottom: 2px solid #4a90d9; white-space: nowrap; cursor: pointer; }}
+thead th:hover {{ color: #81d4fa; }}
+tbody tr {{ border-bottom: 1px solid rgba(74,144,217,0.15); transition: background 0.2s; }}
+tbody tr:hover {{ background: rgba(74,144,217,0.1); }}
+tbody tr:nth-child(even) {{ background: rgba(255,255,255,0.02); }}
+tbody td {{ padding: 10px; vertical-align: middle; }}
+.kw-red {{ color: #ff5252; font-weight: bold; }}
+.link {{ color: #4fc3f7; text-decoration: none; }}
+.link:hover {{ text-decoration: underline; }}
+.footer {{ text-align: center; padding: 20px; color: #607d8b; font-size: 12px;
+  border-top: 1px solid rgba(74,144,217,0.2); }}
+.empty-row {{ text-align: center; color: #607d8b; padding: 40px !important; }}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1><span>新都区招投标信息</span> | 招投标智慧检索</h1>
+  <div class="date">数据更新：2026-09-20 | 近两周</div>
+</div>
+<div class="stats" id="stats"></div>
+<div class="controls">
+  <input type="text" class="search-box" id="searchInput" placeholder="输入关键词搜索...">
+  <button class="filter-btn active" data-filter="all">全部</button>
+  <button class="filter-btn" data-filter="招标公告">招标公告</button>
+  <button class="filter-btn" data-filter="中标结果">中标结果</button>
+  <button class="filter-btn" data-filter="其他">其他</button>
+</div>
+<div class="table-wrap">
+  <table>
+    <thead><tr>
+      <th>序号</th><th>标题</th><th>客户单位</th><th>信息类型</th>
+      <th>发布时间</th><th>金额</th><th>匹配关键词</th><th>来源</th>
+    </tr></thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+<div class="footer">新都区招投标信息 | 招投标智慧检索智能体 | TeleAgent（星辰超级智能体）</div>
+<script>
+const DATA = [{"标题": "成都市新都区卫生健康局关于网络和数据安全及机房基础设施运维服务项目的市场调研公告", "客户单位": "", "信息类型": "预告", "地区": "四川-成都", "发布时间": "2026-09-19", "金额": "", "报名截止时间": "", "内容摘要": "招标预告，成都市新都区卫生健康局关于网络和数据安全及机房基础设施运维服", "链接": "http://www.qianlima.com/zb/detail/20260919_632645427.html", "匹配关键词": "网络", "搜索词": "新都", "来源": "千里马"}, {"标题": "成都市新都区融媒体中心（成都市新都区广播电视台）网络安全服务采购项目成交公告", "客户单位": "", "信息类型": "结果", "地区": "四川-成都", "发布时间": "2026-09-18", "金额": "", "报名截止时间": "", "内容摘要": "中标结果，成都市新都区融媒体中心（成都市新都区广播电视台）网络安全服务", "链接": "http://www.qianlima.com/zb/detail/20260918_632419874.html", "匹配关键词": "网络、网络安全", "搜索词": "新都", "来源": "千里马"}, {"标题": "西南石油大学2026年政府采购意向公开（第26批）", "客户单位": "西南石油大学", "信息类型": "公告", "地区": "四川-成都-新都区", "发布时间": "2026-09-18", "金额": "823.4万元", "报名截止时间": "2026-11", "内容摘要": "西南石油大学2026年采购意向第26批：含光网改造123.8万、全重室光纤交换机16.2万、数据中心服务器126万、分布式存储75万、网络安全加固26万、数据管理平台79万、门禁91.9万、UPS 11.9万等12个项目，预计11月采购", "链接": "https://www.ccgp-sichuan.gov.cn/maincms-web/article?type=article&id=8a69d0d5a0b1d38401a0b374a14766e3", "匹配关键词": "交换机、网络、等保、网络安全、数据存储、服务器、光网改造、门禁", "搜索词": "西南石油大学", "来源": "西南石油大学"}];
+const KW_LIST = ["交换机", "通信", "网络", "等保", "云计算", "大数据", "AI大模型", "5G", "息壤智算", "量子通信", "云电脑", "主机托管", "数据存储", "灾备", "网络安全", "等保服务", "云安全", "边缘计算"];
+let currentFilter = 'all';
+let searchQuery = '';
+
+function highlightKeywords(text) {{
+  if (!text) return text;
+  let result = text;
+  KW_LIST.forEach(kw => {{
+    const re = new RegExp(kw.replace(/[.*+?^${{}}()|[\]\\]/g, '\\$&'), 'gi');
+    result = result.replace(re, '<span class="kw-red">' + kw + '</span>');
+  }});
+  return result;
+}}
+
+function render() {{
+  let filtered = DATA.filter(item => {{
+    const matchFilter = currentFilter === 'all' ||
+      (currentFilter === '其他' ? !['招标公告','中标结果'].includes(item['信息类型']) : item['信息类型'] === currentFilter);
+    const matchSearch = !searchQuery ||
+      Object.values(item).some(v => String(v).toLowerCase().includes(searchQuery.toLowerCase()));
+    return matchFilter && matchSearch;
+  }});
+
+  document.getElementById('stats').innerHTML = `
+    <div class="stat-card"><div class="num">${{DATA.length}}</div><div class="label">总项目数</div></div>
+    <div class="stat-card"><div class="num">${{filtered.length}}</div><div class="label">当前筛选</div></div>
+    <div class="stat-card"><div class="num">${{DATA.filter(i=>i['标题'].match(new RegExp(KW_LIST.join('|')))).length}}</div><div class="label">标题含关键词</div></div>
+  `;
+
+  const tbody = document.getElementById('tbody');
+  if (filtered.length === 0) {{
+    tbody.innerHTML = '<tr><td colspan="8" class="empty-row">暂无匹配数据</td></tr>';
+    return;
+  }}
+  tbody.innerHTML = filtered.map((item, i) => `
+    <tr>
+      <td>${{i+1}}</td>
+      <td>${{highlightKeywords(item['标题'])}}</td>
+      <td>${{item['客户单位'] || '/'}}</td>
+      <td>${{item['信息类型'] || '/'}}</td>
+      <td>${{item['发布时间'] || '/'}}</td>
+      <td>${{item['金额'] || '/'}}</td>
+      <td class="kw-red">${{item['匹配关键词'] || '/'}}</td>
+      <td>${{item['来源'] || '/'}}</td>
+    </tr>
+  `).join('');
+}}
+
+document.getElementById('searchInput').addEventListener('input', e => {{
+  searchQuery = e.target.value;
+  render();
+}});
+
+document.querySelectorAll('.filter-btn').forEach(btn => {{
+  btn.addEventListener('click', () => {{
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    render();
+  }});
+}});
+
+render();
+</script>
+</body>
+</html>
